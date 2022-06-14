@@ -1,4 +1,4 @@
-FROM alpine:3.16.0
+FROM rockylinux:8.5
 WORKDIR /
 
 # iproute2 -> bridge
@@ -8,7 +8,10 @@ WORKDIR /
 # coreutils -> need REAL chown and chmod for dhclient (it uses reference option not supported in busybox)
 # bash -> for scripting logic
 # inotify-tools -> inotifyd for dnsmask resolv.conf reload circumvention
-RUN apk add --no-cache coreutils dnsmasq-dnssec iproute2 bind-tools dhclient bash inotify-tools
+RUN dnf install -y epel-release && \
+    dnf install -y procps-ng iptables dnsmasq iproute bind-utils dhcp-client inotify-tools && \
+    dnf clean all && \
+    rm -rf /var/cache/dnf
 
 COPY config /default_config
 COPY config /config

@@ -57,9 +57,14 @@ done
 dnsmasq -k &
 dnsmasq=$!
 
-# inotifyd to keep in sync resolv.conf copy
-# Monitor file content (c) and metadata (e) changes
-inotifyd /bin/copy_resolv.sh /etc/resolv.conf:ce
+# inotifywait to keep resolv.conf copy in sync
+inotifywait --monitor --syslog --quiet --recursive \
+    --event modify --event attrib \
+    /etc/resolv.conf |
+while read CHANGED; do
+  /bin/copy_resolv.sh
+done
+
 inotifyd=$!
 
 _kill_procs() {

@@ -76,7 +76,8 @@ EOF
 #Configure IP and default GW though the gateway docker
 if [[ -z "$NAT_ENTRY" ]]; then
   echo "Get dynamic IP"
-  dhclient -v -cf /etc/dhclient.conf vxlan0
+  dhclient -x
+  dhclient -1 -v -cf /etc/dhclient.conf vxlan0
 else
   IP=$(cut -d' ' -f2 <<< "$NAT_ENTRY")
   VXLAN_IP="${VXLAN_IP_NETWORK}.${IP}"
