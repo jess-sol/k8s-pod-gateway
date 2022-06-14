@@ -1,6 +1,6 @@
 
 # Image URL to use all building/pushing image targets
-IMG ?= pod-gateway:latest
+IMG ?= ghcr.io/jess-sol/k8s-pod-gateway:latest
 
 # Build the docker image
 docker-build:
