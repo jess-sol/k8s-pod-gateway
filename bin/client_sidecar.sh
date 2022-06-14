@@ -7,6 +7,19 @@ cat /default_config/settings.sh
 cat /config/settings.sh
 . /config/settings.sh
 
+# Configure logging
+cat <<EOF > /etc/rsyslog.conf
+module(load="imuxsock")
+
+global(workDirectory="/var/lib/rsyslog")
+module(load="builtin:omfile" Template="RSYSLOG_TraditionalFileFormat")
+include(file="/etc/rsyslog.d/*.conf" mode="optional")
+
+*.info;mail.none;authpriv.none;cron.none /dev/console
+EOF
+
+rsyslogd
+
 VXLAN_GATEWAY_IP="${VXLAN_IP_NETWORK}.1"
 
 # Loop to test connection to gateway each 10 seconds

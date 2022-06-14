@@ -9,7 +9,7 @@ WORKDIR /
 # bash -> for scripting logic
 # inotify-tools -> inotifyd for dnsmask resolv.conf reload circumvention
 RUN dnf install -y epel-release && \
-    dnf install -y procps-ng iptables dnsmasq iproute bind-utils dhcp-client inotify-tools && \
+    dnf install -y procps-ng iptables dnsmasq iproute bind-utils dhcp-client inotify-tools rsyslog && \
     dnf clean all && \
     rm -rf /var/cache/dnf
 
