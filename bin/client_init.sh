@@ -83,7 +83,7 @@ else
   VXLAN_IP="${VXLAN_IP_NETWORK}.${IP}"
   echo "Use fixed IP $VXLAN_IP"
   ip addr add "${VXLAN_IP}/24" dev vxlan0
-  route add default gw "$VXLAN_GATEWAY_IP"
+  ip route add default gw "$VXLAN_GATEWAY_IP"
 fi
 
 # For debugging reasons print some info
