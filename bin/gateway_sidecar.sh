@@ -9,7 +9,7 @@ cat /config/settings.sh
 . /config/settings.sh
 
 #Get K8S DNS
-K8S_DNS=$(grep nameserver /etc/resolv.conf | cut -d' ' -f2)
+K8S_DNS=$(grep nameserver /etc/resolv.conf | cut -d' ' -f2 | tr '\n' ' ')
 
 
 cat << EOF > /etc/dnsmasq.d/pod-gateway.conf
@@ -44,10 +44,10 @@ resolv-file=${RESOLV_CONF_COPY}
 EOF
 
 for local_cidr in $DNS_LOCAL_CIDRS; do
-  cat << EOF >> /etc/dnsmasq.d/pod-gateway.conf
-  # Send ${local_cidr} DNS queries to the K8S DNS server
-  server=/${local_cidr}/${K8S_DNS}
-EOF
+  echo "# Send ${local_cidr} DNS queries to the K8S DNS server" >> /etc/dnsmasq.d/pod-gateway.conf
+  for dns_entry in $K8S_DNS; do
+    echo "server=/${local_cidr}/${dns_entry}" >> /etc/dnsmasq.d/pod-gateway.conf
+  done
 done
 
 # Make a copy of /etc/resolv.conf
