@@ -1,4 +1,4 @@
-FROM rockylinux:8.5
+FROM rockylinux:8
 WORKDIR /
 
 # iproute2 -> bridge
